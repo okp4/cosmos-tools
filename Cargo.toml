@@ -1,14 +1,12 @@
 [package]
 authors = ["OKP4"]
-description = "A template project for Rust."
+description = "Little tool to generate json configuration for periodic vesting with cliff."
 edition = "2021"
 license-file = "LICENSE"
 name = "vesting_generator"
 readme = "README.md"
-repository = "https://github.com/okp4/template-rust"
+repository = "https://github.com/okp4/vesting-generator"
 version = "0.1.0"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 clap = "3"

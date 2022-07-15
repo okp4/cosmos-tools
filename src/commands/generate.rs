@@ -5,13 +5,7 @@ use clap::Parser;
 use serde_derive::{Deserialize, Serialize};
 use std::{path::PathBuf, process::exit};
 
-/// `start` subcommand
-///
-/// The `Parser` proc macro generates an option parser based on the struct
-/// definition, and is defined in the `clap` crate. See their documentation
-/// for a more comprehensive example:
-///
-/// <https://docs.rs/clap/>
+/// `generate` subcommand
 #[derive(Command, Debug, Parser)]
 pub struct GenerateCmd {
     /// The total amount of token to vest
@@ -22,10 +16,11 @@ pub struct GenerateCmd {
     /// The total duration of vesting (in seconds)
     #[clap(short, long)]
     duration: u64,
-    /// Cliff duration (in seconds)
+    /// Cliff duration (in seconds), if not filled, vesting start immediately.
     #[clap(short = 'c', long = "cliff", default_value = "0")]
     cliff_duration: u64,
-    /// The path to the output file where JSON will be write
+    /// The path to the output file where JSON will be write, if not filled, json will be write on
+    /// stdout.
     #[clap(short = 'o', long = "output")]
     output: Option<PathBuf>,
 }
@@ -83,8 +78,7 @@ impl Runnable for GenerateCmd {
             Ok(json) => {
                 if self.output.is_some() {
                     let _ = std::fs::write(&self.output.as_ref().unwrap(), &json);
-                }
-                else {
+                } else {
                     println!("{}", json);
                 }
             }
@@ -119,7 +113,7 @@ mod generate_tests {
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
             cliff_duration: 0,  // no cliff
-            output: PathBuf::from(""),
+            output: None,
         };
 
         let result = cmd.get_vested_coin(cmd.interval);
@@ -134,7 +128,7 @@ mod generate_tests {
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
             cliff_duration: 15768000, // 6 month cliff
-            output: PathBuf::from(""),
+            output: None,
         };
 
         let mut result = cmd.get_vested_coin(cmd.interval);
@@ -159,7 +153,7 @@ mod generate_tests {
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
             cliff_duration: 0,
-            output: PathBuf::from(""),
+            output: None,
         };
 
         let result = cmd.build_periods();
@@ -188,7 +182,7 @@ mod generate_tests {
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
             cliff_duration: 15768000, // 6 month cliff
-            output: PathBuf::from(""),
+            output: None,
         };
 
         let result = cmd.build_periods();
