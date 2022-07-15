@@ -10,11 +10,11 @@
 //! See the `impl Configurable` below for how to specify the path to the
 //! application's configuration file.
 
-mod start;
+mod generate;
 
-use self::start::StartCmd;
+use self::generate::GenerateCmd;
 use crate::config::VestingGeneratorConfig;
-use abscissa_core::{config::Override, Command, Configurable, FrameworkError, Runnable};
+use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -25,8 +25,9 @@ pub const CONFIG_FILE: &str = "vesting_generator.toml";
 /// Subcommands need to be listed in an enum.
 #[derive(Command, Debug, Parser, Runnable)]
 pub enum VestingGeneratorCmd {
-    /// The `start` subcommand
-    Start(StartCmd),
+    /// Generate a JSON file containing all vesting periods based on interval and cliff duration
+    /// configured
+    Generate(GenerateCmd),
 }
 
 /// Entry point for the application. It needs to be a struct to allow using subcommands!
@@ -80,12 +81,6 @@ impl Configurable<VestingGeneratorConfig> for EntryPoint {
         &self,
         config: VestingGeneratorConfig,
     ) -> Result<VestingGeneratorConfig, FrameworkError> {
-        match &self.cmd {
-            VestingGeneratorCmd::Start(cmd) => cmd.override_config(config),
-            //
-            // If you don't need special overrides for some
-            // subcommands, you can just use a catch all
-            // _ => Ok(config),
-        }
+        Ok(config)
     }
 }

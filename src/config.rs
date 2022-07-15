@@ -7,39 +7,16 @@
 use serde::{Deserialize, Serialize};
 
 /// VestingGenerator Configuration
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct VestingGeneratorConfig {
     /// An example configuration section
-    pub hello: ExampleSection,
+    pub generator: GeneratorSection,
 }
 
-/// Default configuration settings.
-///
-/// Note: if your needs are as simple as below, you can
-/// use `#[derive(Default)]` on VestingGeneratorConfig instead.
-impl Default for VestingGeneratorConfig {
-    fn default() -> Self {
-        Self {
-            hello: ExampleSection::default(),
-        }
-    }
-}
-
-/// Example configuration section.
+/// Generate configuration section.
 ///
 /// Delete this and replace it with your actual configuration structs.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, Default)]
 #[serde(deny_unknown_fields)]
-pub struct ExampleSection {
-    /// Example configuration value
-    pub recipient: String,
-}
-
-impl Default for ExampleSection {
-    fn default() -> Self {
-        Self {
-            recipient: "world".to_owned(),
-        }
-    }
-}
+pub struct GeneratorSection {}
