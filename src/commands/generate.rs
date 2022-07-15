@@ -27,7 +27,7 @@ pub struct GenerateCmd {
     cliff_duration: u64,
     /// The path to the output file where JSON will be write
     #[clap(short = 'o', long = "output")]
-    output: PathBuf,
+    output: Option<PathBuf>,
 }
 
 impl GenerateCmd {
@@ -52,8 +52,6 @@ impl GenerateCmd {
             let vested = self.get_vested_coin(time);
 
             let token = vested - last_vested;
-
-            println!("Distribution {} : {}uknow at {}.", i, token, time);
 
             if token == 0 {
                 continue;
@@ -83,7 +81,12 @@ impl Runnable for GenerateCmd {
 
         match json {
             Ok(json) => {
-                let _ = std::fs::write(&self.output, &json);
+                if self.output.is_some() {
+                    let _ = std::fs::write(&self.output.as_ref().unwrap(), &json);
+                }
+                else {
+                    println!("{}", json);
+                }
             }
             _ => {
                 println!("failed convert to json object");
