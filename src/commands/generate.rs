@@ -2,8 +2,8 @@
 
 use abscissa_core::{Command, Runnable};
 use clap::Parser;
-use std::path::PathBuf;
 use serde_derive::{Deserialize, Serialize};
+use std::{path::PathBuf, process::exit};
 
 /// `start` subcommand
 ///
@@ -31,7 +31,6 @@ pub struct GenerateCmd {
 }
 
 impl GenerateCmd {
-
     fn get_vested_coin(&self, time: u64) -> u128 {
         if time < self.cliff_duration {
             return 0;
@@ -79,7 +78,18 @@ impl GenerateCmd {
 impl Runnable for GenerateCmd {
     /// Start the application.
     fn run(&self) {
-        println!("Hello, world!");
+        let result = self.build_periods();
+        let json = serde_json::to_string_pretty(&result);
+
+        match json {
+            Ok(json) => {
+                let _ = std::fs::write(&self.output, &json);
+            }
+            _ => {
+                println!("failed convert to json object");
+                exit(1);
+            }
+        }
     }
 }
 
@@ -97,7 +107,7 @@ struct Token {
 
 #[cfg(test)]
 mod generate_tests {
-    use super::{*};
+    use super::*;
 
     #[test]
     fn test_initial_vest_without_cliff() {

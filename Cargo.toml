@@ -13,8 +13,8 @@ version = "0.1.0"
 [dependencies]
 clap = "3"
 serde = { version = "1", features = ["serde_derive"] }
-serde_json = "1"
 serde_derive = "1"
+serde_json = "1"
 thiserror = "1"
 
 [dependencies.abscissa_core]
