@@ -17,6 +17,7 @@ use crate::config::VestingGeneratorConfig;
 use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
+use abscissa_core::config::Override;
 
 /// VestingGenerator Configuration Filename
 pub const CONFIG_FILE: &str = "vesting_generator.toml";
@@ -81,6 +82,8 @@ impl Configurable<VestingGeneratorConfig> for EntryPoint {
         &self,
         config: VestingGeneratorConfig,
     ) -> Result<VestingGeneratorConfig, FrameworkError> {
-        Ok(config)
+        match &self.cmd {
+            VestingGeneratorCmd::Generate(cmd) => cmd.override_config(config),
+        }
     }
 }

@@ -10,13 +10,22 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct VestingGeneratorConfig {
-    /// An example configuration section
+    /// Represent the configuration of the generate command
     pub generator: GeneratorSection,
 }
 
 /// Generate configuration section.
-///
-/// Delete this and replace it with your actual configuration structs.
-#[derive(Clone, Debug, Deserialize, Serialize, Default)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-pub struct GeneratorSection {}
+pub struct GeneratorSection {
+    /// Set token denom registered into the json file.
+    pub denom: String,
+}
+
+impl Default for GeneratorSection {
+    fn default() -> Self {
+        Self {
+            denom: "uknow".to_owned(),
+        }
+    }
+}

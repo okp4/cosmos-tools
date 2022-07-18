@@ -1,9 +1,11 @@
 //! `start` subcommand - example of how to write a subcommand
 
-use abscissa_core::{Command, Runnable};
+use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
 use serde_derive::{Deserialize, Serialize};
 use std::{path::PathBuf, process::exit};
+use crate::application::APP;
+use crate::config::VestingGeneratorConfig;
 
 /// `generate` subcommand
 #[derive(Command, Debug, Parser)]
@@ -23,6 +25,9 @@ pub struct GenerateCmd {
     /// stdout.
     #[clap(short = 'o', long = "output")]
     output: Option<PathBuf>,
+    /// Configure the token denom used into json configuration
+    #[clap(long = "denom")]
+    denom: Option<String>,
 }
 
 impl GenerateCmd {
@@ -38,6 +43,7 @@ impl GenerateCmd {
     }
 
     fn build_periods(&self) -> Vec<Period> {
+        let config = APP.config();
         let periods = self.duration / self.interval;
 
         let mut result = Vec::new();
@@ -55,7 +61,7 @@ impl GenerateCmd {
             let period = Period {
                 length: time.to_string(),
                 amount: Token {
-                    denom: String::from("uknow"),
+                    denom: String::from(&config.generator.denom),
                     amount: format!("{}", token),
                 },
             };
@@ -102,8 +108,25 @@ struct Token {
     amount: String,
 }
 
+impl config::Override<VestingGeneratorConfig> for GenerateCmd {
+    // Process the given command line options, overriding settings from
+    // a configuration file using explicit flags taken from command-line
+    // arguments.
+    fn override_config(
+        &self,
+        mut config: VestingGeneratorConfig,
+    ) -> Result<VestingGeneratorConfig, FrameworkError> {
+        if !self.denom.is_none() {
+            config.generator.denom = self.denom.as_ref().unwrap().clone();
+        }
+
+        Ok(config)
+    }
+}
+
 #[cfg(test)]
 mod generate_tests {
+    use clap::ErrorKind::NoEquals;
     use super::*;
 
     #[test]
@@ -114,6 +137,7 @@ mod generate_tests {
             duration: 63072000, // 2 years
             cliff_duration: 0,  // no cliff
             output: None,
+            denom: None,
         };
 
         let result = cmd.get_vested_coin(cmd.interval);
@@ -129,6 +153,7 @@ mod generate_tests {
             duration: 63072000,       // 2 years
             cliff_duration: 15768000, // 6 month cliff
             output: None,
+            denom: None,
         };
 
         let mut result = cmd.get_vested_coin(cmd.interval);
@@ -154,6 +179,7 @@ mod generate_tests {
             duration: 63072000, // 2 years
             cliff_duration: 0,
             output: None,
+            denom: None,
         };
 
         let result = cmd.build_periods();
@@ -183,6 +209,7 @@ mod generate_tests {
             duration: 63072000,       // 2 years
             cliff_duration: 15768000, // 6 month cliff
             output: None,
+            denom: None,
         };
 
         let result = cmd.build_periods();
