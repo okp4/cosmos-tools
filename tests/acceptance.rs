@@ -18,10 +18,11 @@
     unused_qualifications
 )]
 
-use std::io::Read;
 use abscissa_core::terminal::Streams;
 use abscissa_core::testing::prelude::*;
 use once_cell::sync::Lazy;
+use std::io::Read;
+use vesting_generator::config::VestingGeneratorConfig;
 
 /// Executes your application binary via `cargo run`.
 ///
@@ -44,7 +45,14 @@ fn version_no_args() {
 fn generate_with_args() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
-        .args(&["generate", "40000", "--duration", "1000", "--interval", "1000"])
+        .args(&[
+            "generate",
+            "40000",
+            "--duration",
+            "1000",
+            "--interval",
+            "1000",
+        ])
         .capture_stdout()
         .run();
     let output = read_until_end_stdout(cmd.stdout());
@@ -52,9 +60,79 @@ fn generate_with_args() {
     cmd.wait().unwrap().expect_success();
 }
 
+#[test]
+fn generate_with_args_denom() {
+    let mut runner = RUNNER.clone();
+    let mut cmd = runner
+        .args(&[
+            "generate",
+            "40000",
+            "--duration",
+            "1000",
+            "--interval",
+            "1000",
+            "--denom",
+            "stake",
+        ])
+        .capture_stdout()
+        .run();
+    let output = read_until_end_stdout(cmd.stdout());
+    assert_eq!(output, "[\n  {\n    \"length\": \"1000\",\n    \"amount\": {\n      \"denom\": \"stake\",\n      \"amount\": \"40000\"\n    }\n  }\n]\n");
+    cmd.wait().unwrap().expect_success();
+}
+
+#[test]
+fn generate_with_config_no_args_denom() {
+    let mut config = VestingGeneratorConfig::default();
+    config.generator.denom = "toto".to_owned();
+
+    let mut runner = RUNNER.clone();
+    let mut cmd = runner
+        .config(&config)
+        .args(&[
+            "generate",
+            "40000",
+            "--duration",
+            "1000",
+            "--interval",
+            "1000",
+        ])
+        .capture_stdout()
+        .run();
+    let output = read_until_end_stdout(cmd.stdout());
+    assert_eq!(output, "[\n  {\n    \"length\": \"1000\",\n    \"amount\": {\n      \"denom\": \"toto\",\n      \"amount\": \"40000\"\n    }\n  }\n]\n");
+    cmd.wait().unwrap().expect_success();
+}
+
+#[test]
+fn generate_with_config_args_denom() {
+    let mut config = VestingGeneratorConfig::default();
+    config.generator.denom = "toto".to_owned();
+
+    let mut runner = RUNNER.clone();
+    let mut cmd = runner
+        .config(&config)
+        .args(&[
+            "generate",
+            "40000",
+            "--duration",
+            "1000",
+            "--interval",
+            "1000",
+            "--denom",
+            "tata",
+        ])
+        .capture_stdout()
+        .run();
+    let output = read_until_end_stdout(cmd.stdout());
+    assert_eq!(output, "[\n  {\n    \"length\": \"1000\",\n    \"amount\": {\n      \"denom\": \"tata\",\n      \"amount\": \"40000\"\n    }\n  }\n]\n");
+    cmd.wait().unwrap().expect_success();
+}
+
 fn read_until_end_stdout(stdout: &mut Stdout) -> String {
     let mut output = String::new();
-    stdout.read_to_string(&mut output)
+    stdout
+        .read_to_string(&mut output)
         .unwrap_or_else(|e| panic!("error reading line from {}: {}", stringify!($name), e));
     output
 }

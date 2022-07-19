@@ -14,10 +14,10 @@ mod generate;
 
 use self::generate::GenerateCmd;
 use crate::config::VestingGeneratorConfig;
+use abscissa_core::config::Override;
 use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
-use abscissa_core::config::Override;
 
 /// VestingGenerator Configuration Filename
 pub const CONFIG_FILE: &str = "vesting_generator.toml";

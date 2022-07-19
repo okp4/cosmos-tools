@@ -1,11 +1,11 @@
 //! `start` subcommand - example of how to write a subcommand
 
+use crate::application::APP;
+use crate::config::VestingGeneratorConfig;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
 use serde_derive::{Deserialize, Serialize};
 use std::{path::PathBuf, process::exit};
-use crate::application::APP;
-use crate::config::VestingGeneratorConfig;
 
 /// `generate` subcommand
 #[derive(Command, Debug, Parser)]
@@ -126,8 +126,8 @@ impl config::Override<VestingGeneratorConfig> for GenerateCmd {
 
 #[cfg(test)]
 mod generate_tests {
-    use clap::ErrorKind::NoEquals;
     use super::*;
+    use clap::ErrorKind::NoEquals;
 
     #[test]
     fn test_initial_vest_without_cliff() {
