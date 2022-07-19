@@ -2,6 +2,7 @@
 
 use crate::application::APP;
 use crate::config::VestingGeneratorConfig;
+use abscissa_core::config::Reader;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
 use serde_derive::{Deserialize, Serialize};
@@ -42,8 +43,7 @@ impl GenerateCmd {
         total as u128
     }
 
-    fn build_periods(&self) -> Vec<Period> {
-        let config = APP.config();
+    fn build_periods(&self, config: Reader<VestingGeneratorConfig>) -> Vec<Period> {
         let periods = self.duration / self.interval;
 
         let mut result = Vec::new();
@@ -77,7 +77,7 @@ impl GenerateCmd {
 impl Runnable for GenerateCmd {
     /// Start the application.
     fn run(&self) {
-        let result = self.build_periods();
+        let result = self.build_periods(APP.config());
         let json = serde_json::to_string_pretty(&result);
 
         match json {
@@ -116,7 +116,7 @@ impl config::Override<VestingGeneratorConfig> for GenerateCmd {
         &self,
         mut config: VestingGeneratorConfig,
     ) -> Result<VestingGeneratorConfig, FrameworkError> {
-        if !self.denom.is_none() {
+        if self.denom.is_some() {
             config.generator.denom = self.denom.as_ref().unwrap().clone();
         }
 
@@ -127,7 +127,7 @@ impl config::Override<VestingGeneratorConfig> for GenerateCmd {
 #[cfg(test)]
 mod generate_tests {
     use super::*;
-    use clap::ErrorKind::NoEquals;
+    use crate::config::GeneratorSection;
 
     #[test]
     fn test_initial_vest_without_cliff() {
@@ -182,7 +182,11 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods();
+        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
+            generator: GeneratorSection {
+                denom: "uknow".to_string(),
+            },
+        }));
         assert_eq!(
             result.len(),
             730,
@@ -212,7 +216,11 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods();
+        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
+            generator: GeneratorSection {
+                denom: "uknow".to_string(),
+            },
+        }));
         assert_eq!(result.len(), 548, "Should be 548 interval since there are 730 day in two years minus the 182 day of the 6 month cliff");
 
         let total = result

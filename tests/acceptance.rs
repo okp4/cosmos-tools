@@ -18,7 +18,6 @@
     unused_qualifications
 )]
 
-use abscissa_core::terminal::Streams;
 use abscissa_core::testing::prelude::*;
 use once_cell::sync::Lazy;
 use std::io::Read;
