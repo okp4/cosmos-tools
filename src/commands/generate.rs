@@ -46,27 +46,22 @@ impl GenerateCmd {
     fn build_periods(&self, config: Reader<VestingGeneratorConfig>) -> Vec<Period> {
         let periods = self.duration / self.interval;
         let mut last_vested = 0;
+        let start = (self.cliff_duration / self.interval) + 1;
 
-        (1..=periods)
-            .filter_map(|period| {
-                let time = self.interval * period as u64;
-                let vested = self.get_vested_coin(time);
-
+        (start..=periods)
+            .map(|period| self.interval * period)
+            .map(|time| (self.get_vested_coin(time), time))
+            .map(|(vested, time)| {
                 let token = vested - last_vested;
-
-                if token == 0 {
-                    return None;
-                }
-
                 last_vested = vested;
 
-                Some(Period {
+                Period {
                     length: time.to_string(),
                     amount: Token {
                         denom: String::from(&config.generator.denom),
                         amount: format!("{}", token),
                     },
-                })
+                }
             })
             .collect::<Vec<Period>>()
     }
