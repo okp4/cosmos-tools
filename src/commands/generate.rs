@@ -48,7 +48,7 @@ impl GenerateCmd {
         let mut last_vested = 0;
 
         (1..=periods)
-            .filter_map( |period| {
+            .filter_map(|period| {
                 let time = self.interval * period as u64;
                 let vested = self.get_vested_coin(time);
 
