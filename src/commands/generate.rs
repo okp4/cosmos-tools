@@ -33,14 +33,15 @@ pub struct GenerateCmd {
 
 impl GenerateCmd {
     fn get_vested_coin(&self, time: u64) -> u128 {
-        if time < self.cliff_duration {
-            return 0;
-        } else if time >= self.duration {
-            return self.total_amount;
+        match time {
+            _ if time < self.cliff_duration => 0,
+            _ if time >= self.duration => self.total_amount,
+            _ => {
+                let coef = time as f64 / self.duration as f64;
+                let total = self.total_amount as f64 * coef;
+                total as u128
+            }
         }
-        let coef = time as f64 / self.duration as f64;
-        let total = self.total_amount as f64 * coef;
-        total as u128
     }
 
     fn build_periods(&self, config: Reader<VestingGeneratorConfig>) -> Vec<Period> {
