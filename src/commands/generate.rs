@@ -1,4 +1,4 @@
-//! `start` subcommand - example of how to write a subcommand
+//! `generate` subcommand
 
 use crate::application::APP;
 use crate::config::VestingGeneratorConfig;

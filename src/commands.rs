@@ -1,14 +1,4 @@
 //! VestingGenerator Subcommands
-//!
-//! This is where you specify the subcommands of your application.
-//!
-//! The default application comes with two subcommands:
-//!
-//! - `start`: launches the application
-//! - `--version`: print application version
-//!
-//! See the `impl Configurable` below for how to specify the path to the
-//! application's configuration file.
 
 mod generate;
 
@@ -23,7 +13,6 @@ use std::path::PathBuf;
 pub const CONFIG_FILE: &str = "vesting_generator.toml";
 
 /// VestingGenerator Subcommands
-/// Subcommands need to be listed in an enum.
 #[derive(Command, Debug, Parser, Runnable)]
 pub enum VestingGeneratorCmd {
     /// Generate a JSON file containing all vesting periods based on interval and cliff duration
@@ -31,7 +20,7 @@ pub enum VestingGeneratorCmd {
     Generate(GenerateCmd),
 }
 
-/// Entry point for the application. It needs to be a struct to allow using subcommands!
+/// Entry point for the application.
 #[derive(Command, Debug, Parser)]
 #[clap(author, about, version)]
 pub struct EntryPoint {
@@ -53,9 +42,7 @@ impl Runnable for EntryPoint {
     }
 }
 
-/// This trait allows you to define how application configuration is loaded.
 impl Configurable<VestingGeneratorConfig> for EntryPoint {
-    /// Location of the configuration file
     fn config_path(&self) -> Option<PathBuf> {
         // Check if the config file exists, and if it does not, ignore it.
         // If you'd like for a missing configuration file to be a hard error
@@ -73,11 +60,6 @@ impl Configurable<VestingGeneratorConfig> for EntryPoint {
         }
     }
 
-    /// Apply changes to the config after it's been loaded, e.g. overriding
-    /// values in a config file using command-line options.
-    ///
-    /// This can be safely deleted if you don't want to override config
-    /// settings from command-line options.
     fn process_config(
         &self,
         config: VestingGeneratorConfig,
