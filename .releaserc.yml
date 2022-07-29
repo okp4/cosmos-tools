@@ -6,7 +6,7 @@ plugins:
   - "@semantic-release/release-notes-generator"
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# ØKP4 template-rust"
+      changelogTitle: "# ØKP4 vesting_generator"
   - - '@google/semantic-release-replace-plugin'
     - replacements:
         - files: [ Cargo.toml ]
@@ -23,9 +23,9 @@ plugins:
         cargo make build
   - - "@semantic-release/github"
     - assets:
-        - name: template-rust
+        - name: vesting_generator
           label: Binary - Darwin amd64
-          path: "./target/release/template-rust"
+          path: "./target/release/vesting_generator"
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md
