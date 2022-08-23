@@ -14,7 +14,7 @@ pub const CONFIG_FILE: &str = "cosmos_tools.toml";
 
 /// VestingGenerator Subcommands
 #[derive(Command, Debug, Parser, Runnable)]
-pub enum VestingGeneratorCmd {
+pub enum CosmosToolsCmd {
     /// Generate a JSON file containing all vesting periods based on interval and cliff duration
     /// configured
     Generate(GenerateCmd),
@@ -25,7 +25,7 @@ pub enum VestingGeneratorCmd {
 #[clap(author, about, version)]
 pub struct EntryPoint {
     #[clap(subcommand)]
-    cmd: VestingGeneratorCmd,
+    cmd: CosmosToolsCmd,
 
     /// Enable verbose logging
     #[clap(short, long)]
@@ -65,7 +65,7 @@ impl Configurable<CosmosToolsConfig> for EntryPoint {
         config: CosmosToolsConfig,
     ) -> Result<CosmosToolsConfig, FrameworkError> {
         match &self.cmd {
-            VestingGeneratorCmd::Generate(cmd) => cmd.override_config(config),
+            CosmosToolsCmd::Generate(cmd) => cmd.override_config(config),
         }
     }
 }
