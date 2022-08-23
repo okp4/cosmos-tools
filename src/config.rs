@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// VestingGenerator Configuration
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 #[serde(deny_unknown_fields)]
-pub struct VestingGeneratorConfig {
+pub struct CosmosToolsConfig {
     /// Represent the configuration of the generate command
     pub generator: GeneratorSection,
 }

@@ -1,6 +1,6 @@
 //! VestingGenerator Abscissa Application
 
-use crate::{commands::EntryPoint, config::VestingGeneratorConfig};
+use crate::{commands::EntryPoint, config::CosmosToolsConfig};
 use abscissa_core::{
     application::{self, AppCell},
     config::{self, CfgCell},
@@ -8,13 +8,13 @@ use abscissa_core::{
 };
 
 /// Application state
-pub static APP: AppCell<VestingGeneratorApp> = AppCell::new();
+pub static APP: AppCell<CosmosToolsApp> = AppCell::new();
 
 /// VestingGenerator Application
 #[derive(Debug)]
-pub struct VestingGeneratorApp {
+pub struct CosmosToolsApp {
     /// Application configuration.
-    config: CfgCell<VestingGeneratorConfig>,
+    config: CfgCell<CosmosToolsConfig>,
 
     /// Application state.
     state: application::State<Self>,
@@ -24,7 +24,7 @@ pub struct VestingGeneratorApp {
 ///
 /// By default no configuration is loaded, and the framework state is
 /// initialized to a default, empty state (no components, threads, etc).
-impl Default for VestingGeneratorApp {
+impl Default for CosmosToolsApp {
     fn default() -> Self {
         Self {
             config: CfgCell::default(),
@@ -33,18 +33,18 @@ impl Default for VestingGeneratorApp {
     }
 }
 
-impl Application for VestingGeneratorApp {
+impl Application for CosmosToolsApp {
     /// Entrypoint command for this application.
     type Cmd = EntryPoint;
 
     /// Application configuration.
-    type Cfg = VestingGeneratorConfig;
+    type Cfg = CosmosToolsConfig;
 
     /// Paths to resources within the application.
     type Paths = StandardPaths;
 
     /// Accessor for application configuration.
-    fn config(&self) -> config::Reader<VestingGeneratorConfig> {
+    fn config(&self) -> config::Reader<CosmosToolsConfig> {
         self.config.read()
     }
 

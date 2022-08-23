@@ -1,7 +1,7 @@
 //! `generate` subcommand
 
 use crate::application::APP;
-use crate::config::VestingGeneratorConfig;
+use crate::config::CosmosToolsConfig;
 use abscissa_core::config::Reader;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
@@ -44,7 +44,7 @@ impl GenerateCmd {
         }
     }
 
-    fn build_periods(&self, config: Reader<VestingGeneratorConfig>) -> Vec<Period> {
+    fn build_periods(&self, config: Reader<CosmosToolsConfig>) -> Vec<Period> {
         let periods = self.duration / self.interval;
         let mut last_vested = 0;
         let start = (self.cliff_duration / self.interval) + 1;
@@ -102,14 +102,14 @@ struct Token {
     amount: String,
 }
 
-impl config::Override<VestingGeneratorConfig> for GenerateCmd {
+impl config::Override<CosmosToolsConfig> for GenerateCmd {
     // Process the given command line options, overriding settings from
     // a configuration file using explicit flags taken from command-line
     // arguments.
     fn override_config(
         &self,
-        mut config: VestingGeneratorConfig,
-    ) -> Result<VestingGeneratorConfig, FrameworkError> {
+        mut config: CosmosToolsConfig,
+    ) -> Result<CosmosToolsConfig, FrameworkError> {
         if self.denom.is_some() {
             config.generator.denom = self.denom.as_ref().unwrap().clone();
         }
@@ -176,7 +176,7 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
+        let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
             generator: GeneratorSection {
                 denom: "uknow".to_string(),
             },
@@ -210,7 +210,7 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
+        let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
             generator: GeneratorSection {
                 denom: "uknow".to_string(),
             },

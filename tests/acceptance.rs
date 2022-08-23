@@ -19,9 +19,9 @@
 )]
 
 use abscissa_core::testing::prelude::*;
+use cosmos_tools::config::CosmosToolsConfig;
 use once_cell::sync::Lazy;
 use std::io::Read;
-use vesting_generator::config::VestingGeneratorConfig;
 
 /// Executes your application binary via `cargo run`.
 ///
@@ -82,7 +82,7 @@ fn generate_with_args_denom() {
 
 #[test]
 fn generate_with_config_no_args_denom() {
-    let mut config = VestingGeneratorConfig::default();
+    let mut config = CosmosToolsConfig::default();
     config.generator.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
@@ -105,7 +105,7 @@ fn generate_with_config_no_args_denom() {
 
 #[test]
 fn generate_with_config_args_denom() {
-    let mut config = VestingGeneratorConfig::default();
+    let mut config = CosmosToolsConfig::default();
     config.generator.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
