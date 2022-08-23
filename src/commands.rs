@@ -15,8 +15,7 @@ pub const CONFIG_FILE: &str = "cosmos_tools.toml";
 /// Cosmos tools Subcommands
 #[derive(Command, Debug, Parser, Runnable)]
 pub enum CosmosToolsCmd {
-    /// Generate a JSON file containing all vesting periods based on interval and cliff duration
-    /// configured
+    /// Utilities for the vesting part of cosmos
     Vesting(VestingCmd),
 }
 

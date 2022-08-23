@@ -1,11 +1,11 @@
-use std::path::PathBuf;
-use std::process::exit;
+use crate::application::APP;
+use crate::config::CosmosToolsConfig;
 use abscissa_core::config::Reader;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
-use crate::application::APP;
 use serde_derive::{Deserialize, Serialize};
-use crate::config::CosmosToolsConfig;
+use std::path::PathBuf;
+use std::process::exit;
 
 /// `generate` subcommand
 #[derive(Command, Debug, Parser)]
