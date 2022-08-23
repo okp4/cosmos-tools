@@ -1,16 +1,22 @@
-# 💰 Vesting generator
+# 🪐 Cosmos tools
 
-[![version](https://img.shields.io/github/v/release/okp4/vesting-generator?style=for-the-badge)](https://github.com/okp4/vesting-generator/releases)
-[![build](https://img.shields.io/github/workflow/status/okp4/vesting-generator/Build?label=build&style=for-the-badge)](https://github.com/okp4/vesting-generator/actions/workflows/build.yml)
-[![lint](https://img.shields.io/github/workflow/status/okp4/vesting-generator/Lint?label=lint&style=for-the-badge)](https://github.com/okp4/vesting-generator/actions/workflows/lint.yml)
-[![test](https://img.shields.io/github/workflow/status/okp4/vesting-generator/Test?label=test&style=for-the-badge)](https://github.com/okp4/vesting-generator/actions/workflows/test.yml)
-[![codecov](https://img.shields.io/codecov/c/github/okp4/vesting-generator?style=for-the-badge&token=K5CYM8TQQY)](https://codecov.io/gh/okp4/vesting-generator)
+[![version](https://img.shields.io/github/v/release/okp4/cosmos-tools?style=for-the-badge)](https://github.com/okp4/cosmos-tools/releases)
+[![build](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Build?label=build&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/build.yml)
+[![lint](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Lint?label=lint&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/lint.yml)
+[![test](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Test?label=test&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/test.yml)
+[![codecov](https://img.shields.io/codecov/c/github/okp4/cosmos-tools?style=for-the-badge&token=K5CYM8TQQY)](https://codecov.io/gh/okp4/cosmos-tools)
 [![conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
 
-A little tool allowing to generate the JSON configuration of a periodic vesting including a cliff.
+Rust command line application with multiple tools to manage cosmos blockchain.
 
-## ❓ Why ?
+## 💰 Vesting
+
+### Generate cliff
+
+An utility to generate the JSON configuration genesis file of a periodic vesting including a cliff.
+
+#### ❓ Why ?
 
 On a cosmos blockchain, it's possible to create multiple type of vesting account at the start of the chain and during chain life.
 
@@ -23,20 +29,19 @@ But there is a missing vesting mode : a continuous vesting account with a cliff.
 
 A temporary solution is to create a periodic vesting account with a relatively low interval so that the funds are available in the most linear way possible. To do that we need to generate a json file that including all vesting period. A generator is necessary to calculate automatically the first vesting amount after the cliff and calculate all vesting period by given an interval.
 
-## 📄 How to use
+#### 📄 How to use
 
-### Command `generate`
+##### Command `vesting generate-cliff`
 
 ```cli
-vesting_generator generate --help
+cosmos_tool vesting generate-cliff --help
 ```
 
 ```cli
-vesting_generator-generate 
 Generate a JSON file containing all vesting periods based on interval and cliff duration configured
 
 USAGE:
-    vesting_generator generate [OPTIONS] --interval <INTERVAL> --duration <DURATION> <TOTAL_AMOUNT>
+    cosmos_tools vesting generate-cliff [OPTIONS] --interval <INTERVAL> --duration <DURATION> <TOTAL_AMOUNT>
 
 ARGS:
     <TOTAL_AMOUNT>    The total amount of token to vest
@@ -45,19 +50,19 @@ OPTIONS:
     -c, --cliff <CLIFF_DURATION>    Cliff duration (in seconds), if not filled, vesting start
                                     immediately [default: 0]
     -d, --duration <DURATION>       The total duration of vesting (in seconds)
+        --denom <DENOM>             Configure the token denom used into json configuration
     -h, --help                      Print help information
     -i, --interval <INTERVAL>       The period interval (in second) which amount is split
     -o, --output <OUTPUT>           The path to the output file where JSON will be write, if not
                                     filled, json will be write on stdout
-
 ```
 
-### Exemple
+##### Exemple
 
 To generate a vesting account with a 2 years vesting (63 072 000 seconds), a total amount of 40 000, a 6-month cliff (15 768 000 seconds) and a distribution with an interval of 1 day (86 400 seconds). The command will look like this :
 
 ```cli
-vesting_generator generate 40000 --duration 63072000 --interval 86400 --cliff 1576800
+cosmos_tools vesting generate-cliff 40000 --duration 63072000 --interval 86400 --cliff 1576800
 ```
 
 ```json
