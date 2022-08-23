@@ -58,7 +58,7 @@ impl GenerateCliffCmd {
                 Period {
                     length: time.to_string(),
                     amount: Token {
-                        denom: String::from(&config.generator.denom),
+                        denom: String::from(&config.vesting.denom),
                         amount: format!("{}", token),
                     },
                 }
@@ -110,7 +110,7 @@ impl config::Override<CosmosToolsConfig> for GenerateCliffCmd {
         mut config: CosmosToolsConfig,
     ) -> Result<CosmosToolsConfig, FrameworkError> {
         if self.denom.is_some() {
-            config.generator.denom = self.denom.as_ref().unwrap().clone();
+            config.vesting.denom = self.denom.as_ref().unwrap().clone();
         }
 
         Ok(config)
@@ -120,7 +120,7 @@ impl config::Override<CosmosToolsConfig> for GenerateCliffCmd {
 #[cfg(test)]
 mod generate_tests {
     use super::*;
-    use crate::config::GeneratorSection;
+    use crate::config::VestingSection;
 
     #[test]
     fn test_initial_vest_without_cliff() {
@@ -176,7 +176,7 @@ mod generate_tests {
         };
 
         let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
-            generator: GeneratorSection {
+            vesting: VestingSection {
                 denom: "uknow".to_string(),
             },
         }));
@@ -210,7 +210,7 @@ mod generate_tests {
         };
 
         let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
-            generator: GeneratorSection {
+            vesting: VestingSection {
                 denom: "uknow".to_string(),
             },
         }));

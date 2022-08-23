@@ -85,7 +85,7 @@ fn generate_with_args_denom() {
 #[test]
 fn generate_with_config_no_args_denom() {
     let mut config = CosmosToolsConfig::default();
-    config.generator.denom = "toto".to_owned();
+    config.vesting.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
     let mut cmd = runner
@@ -109,7 +109,7 @@ fn generate_with_config_no_args_denom() {
 #[test]
 fn generate_with_config_args_denom() {
     let mut config = CosmosToolsConfig::default();
-    config.generator.denom = "toto".to_owned();
+    config.vesting.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
     let mut cmd = runner
