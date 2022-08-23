@@ -1,23 +1,23 @@
 //! VestingGenerator Subcommands
 
-mod generate;
+mod vesting;
 
-use self::generate::GenerateCmd;
+use self::vesting::VestingCmd;
 use crate::config::CosmosToolsConfig;
 use abscissa_core::config::Override;
 use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
 
-/// VestingGenerator Configuration Filename
+/// Cosmos tools Configuration Filename
 pub const CONFIG_FILE: &str = "cosmos_tools.toml";
 
-/// VestingGenerator Subcommands
+/// Cosmos tools Subcommands
 #[derive(Command, Debug, Parser, Runnable)]
 pub enum CosmosToolsCmd {
     /// Generate a JSON file containing all vesting periods based on interval and cliff duration
     /// configured
-    Generate(GenerateCmd),
+    Vesting(VestingCmd),
 }
 
 /// Entry point for the application.
@@ -65,7 +65,7 @@ impl Configurable<CosmosToolsConfig> for EntryPoint {
         config: CosmosToolsConfig,
     ) -> Result<CosmosToolsConfig, FrameworkError> {
         match &self.cmd {
-            CosmosToolsCmd::Generate(cmd) => cmd.override_config(config),
+            CosmosToolsCmd::Vesting(cmd) => cmd.override_config(config),
         }
     }
 }

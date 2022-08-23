@@ -1,16 +1,15 @@
-//! `generate` subcommand
-
-use crate::application::APP;
-use crate::config::CosmosToolsConfig;
+use std::path::PathBuf;
+use std::process::exit;
 use abscissa_core::config::Reader;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
+use crate::application::APP;
 use serde_derive::{Deserialize, Serialize};
-use std::{path::PathBuf, process::exit};
+use crate::config::CosmosToolsConfig;
 
 /// `generate` subcommand
 #[derive(Command, Debug, Parser)]
-pub struct GenerateCmd {
+pub struct GenerateCliffCmd {
     /// The total amount of token to vest
     total_amount: u128,
     /// The period interval (in second) which amount is split
@@ -31,7 +30,7 @@ pub struct GenerateCmd {
     denom: Option<String>,
 }
 
-impl GenerateCmd {
+impl GenerateCliffCmd {
     fn get_vested_coin(&self, time: u64) -> u128 {
         match time {
             _ if time < self.cliff_duration => 0,
@@ -68,7 +67,7 @@ impl GenerateCmd {
     }
 }
 
-impl Runnable for GenerateCmd {
+impl Runnable for GenerateCliffCmd {
     /// Start the application.
     fn run(&self) {
         let result = self.build_periods(APP.config());
@@ -102,7 +101,7 @@ struct Token {
     amount: String,
 }
 
-impl config::Override<CosmosToolsConfig> for GenerateCmd {
+impl config::Override<CosmosToolsConfig> for GenerateCliffCmd {
     // Process the given command line options, overriding settings from
     // a configuration file using explicit flags taken from command-line
     // arguments.
@@ -125,7 +124,7 @@ mod generate_tests {
 
     #[test]
     fn test_initial_vest_without_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
@@ -141,7 +140,7 @@ mod generate_tests {
 
     #[test]
     fn test_initial_vest_with_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
@@ -167,7 +166,7 @@ mod generate_tests {
 
     #[test]
     fn test_build_periods_without_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
@@ -201,7 +200,7 @@ mod generate_tests {
 
     #[test]
     fn test_build_periods_with_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
