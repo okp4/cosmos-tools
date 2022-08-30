@@ -19,9 +19,9 @@
 )]
 
 use abscissa_core::testing::prelude::*;
+use cosmos_tools::config::CosmosToolsConfig;
 use once_cell::sync::Lazy;
 use std::io::Read;
-use vesting_generator::config::VestingGeneratorConfig;
 
 /// Executes your application binary via `cargo run`.
 ///
@@ -45,7 +45,8 @@ fn generate_with_args() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .args(&[
-            "generate",
+            "vesting",
+            "generate-cliff",
             "40000",
             "--duration",
             "1000",
@@ -64,7 +65,8 @@ fn generate_with_args_denom() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .args(&[
-            "generate",
+            "vesting",
+            "generate-cliff",
             "40000",
             "--duration",
             "1000",
@@ -82,14 +84,15 @@ fn generate_with_args_denom() {
 
 #[test]
 fn generate_with_config_no_args_denom() {
-    let mut config = VestingGeneratorConfig::default();
-    config.generator.denom = "toto".to_owned();
+    let mut config = CosmosToolsConfig::default();
+    config.vesting.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .config(&config)
         .args(&[
-            "generate",
+            "vesting",
+            "generate-cliff",
             "40000",
             "--duration",
             "1000",
@@ -105,14 +108,15 @@ fn generate_with_config_no_args_denom() {
 
 #[test]
 fn generate_with_config_args_denom() {
-    let mut config = VestingGeneratorConfig::default();
-    config.generator.denom = "toto".to_owned();
+    let mut config = CosmosToolsConfig::default();
+    config.vesting.denom = "toto".to_owned();
 
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .config(&config)
         .args(&[
-            "generate",
+            "vesting",
+            "generate-cliff",
             "40000",
             "--duration",
             "1000",

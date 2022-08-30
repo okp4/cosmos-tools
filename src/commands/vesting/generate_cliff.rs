@@ -1,16 +1,15 @@
-//! `generate` subcommand
-
 use crate::application::APP;
-use crate::config::VestingGeneratorConfig;
+use crate::config::CosmosToolsConfig;
 use abscissa_core::config::Reader;
 use abscissa_core::{config, Application, Command, FrameworkError, Runnable};
 use clap::Parser;
 use serde_derive::{Deserialize, Serialize};
-use std::{path::PathBuf, process::exit};
+use std::path::PathBuf;
+use std::process::exit;
 
 /// `generate` subcommand
 #[derive(Command, Debug, Parser)]
-pub struct GenerateCmd {
+pub struct GenerateCliffCmd {
     /// The total amount of token to vest
     total_amount: u128,
     /// The period interval (in second) which amount is split
@@ -31,7 +30,7 @@ pub struct GenerateCmd {
     denom: Option<String>,
 }
 
-impl GenerateCmd {
+impl GenerateCliffCmd {
     fn get_vested_coin(&self, time: u64) -> u128 {
         match time {
             _ if time < self.cliff_duration => 0,
@@ -44,7 +43,7 @@ impl GenerateCmd {
         }
     }
 
-    fn build_periods(&self, config: Reader<VestingGeneratorConfig>) -> Vec<Period> {
+    fn build_periods(&self, config: Reader<CosmosToolsConfig>) -> Vec<Period> {
         let periods = self.duration / self.interval;
         let mut last_vested = 0;
         let start = (self.cliff_duration / self.interval) + 1;
@@ -59,7 +58,7 @@ impl GenerateCmd {
                 Period {
                     length: time.to_string(),
                     amount: Token {
-                        denom: String::from(&config.generator.denom),
+                        denom: String::from(&config.vesting.denom),
                         amount: format!("{}", token),
                     },
                 }
@@ -68,7 +67,7 @@ impl GenerateCmd {
     }
 }
 
-impl Runnable for GenerateCmd {
+impl Runnable for GenerateCliffCmd {
     /// Start the application.
     fn run(&self) {
         let result = self.build_periods(APP.config());
@@ -102,16 +101,16 @@ struct Token {
     amount: String,
 }
 
-impl config::Override<VestingGeneratorConfig> for GenerateCmd {
+impl config::Override<CosmosToolsConfig> for GenerateCliffCmd {
     // Process the given command line options, overriding settings from
     // a configuration file using explicit flags taken from command-line
     // arguments.
     fn override_config(
         &self,
-        mut config: VestingGeneratorConfig,
-    ) -> Result<VestingGeneratorConfig, FrameworkError> {
+        mut config: CosmosToolsConfig,
+    ) -> Result<CosmosToolsConfig, FrameworkError> {
         if self.denom.is_some() {
-            config.generator.denom = self.denom.as_ref().unwrap().clone();
+            config.vesting.denom = self.denom.as_ref().unwrap().clone();
         }
 
         Ok(config)
@@ -121,11 +120,11 @@ impl config::Override<VestingGeneratorConfig> for GenerateCmd {
 #[cfg(test)]
 mod generate_tests {
     use super::*;
-    use crate::config::GeneratorSection;
+    use crate::config::VestingSection;
 
     #[test]
     fn test_initial_vest_without_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
@@ -141,7 +140,7 @@ mod generate_tests {
 
     #[test]
     fn test_initial_vest_with_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
@@ -167,7 +166,7 @@ mod generate_tests {
 
     #[test]
     fn test_build_periods_without_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,    // 1 day interval
             duration: 63072000, // 2 years
@@ -176,8 +175,8 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
-            generator: GeneratorSection {
+        let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
+            vesting: VestingSection {
                 denom: "uknow".to_string(),
             },
         }));
@@ -201,7 +200,7 @@ mod generate_tests {
 
     #[test]
     fn test_build_periods_with_cliff() {
-        let cmd = GenerateCmd {
+        let cmd = GenerateCliffCmd {
             total_amount: 40000,
             interval: 86400,          // 1 day interval
             duration: 63072000,       // 2 years
@@ -210,8 +209,8 @@ mod generate_tests {
             denom: None,
         };
 
-        let result = cmd.build_periods(Reader::new(VestingGeneratorConfig {
-            generator: GeneratorSection {
+        let result = cmd.build_periods(Reader::new(CosmosToolsConfig {
+            vesting: VestingSection {
                 denom: "uknow".to_string(),
             },
         }));

@@ -1,23 +1,22 @@
 //! VestingGenerator Subcommands
 
-mod generate;
+mod vesting;
 
-use self::generate::GenerateCmd;
-use crate::config::VestingGeneratorConfig;
+use self::vesting::VestingCmd;
+use crate::config::CosmosToolsConfig;
 use abscissa_core::config::Override;
 use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
 
-/// VestingGenerator Configuration Filename
-pub const CONFIG_FILE: &str = "vesting_generator.toml";
+/// Cosmos tools Configuration Filename
+pub const CONFIG_FILE: &str = "cosmos_tools.toml";
 
-/// VestingGenerator Subcommands
+/// Cosmos tools Subcommands
 #[derive(Command, Debug, Parser, Runnable)]
-pub enum VestingGeneratorCmd {
-    /// Generate a JSON file containing all vesting periods based on interval and cliff duration
-    /// configured
-    Generate(GenerateCmd),
+pub enum CosmosToolsCmd {
+    /// Utilities for the vesting part of cosmos
+    Vesting(VestingCmd),
 }
 
 /// Entry point for the application.
@@ -25,7 +24,7 @@ pub enum VestingGeneratorCmd {
 #[clap(author, about, version)]
 pub struct EntryPoint {
     #[clap(subcommand)]
-    cmd: VestingGeneratorCmd,
+    cmd: CosmosToolsCmd,
 
     /// Enable verbose logging
     #[clap(short, long)]
@@ -42,7 +41,7 @@ impl Runnable for EntryPoint {
     }
 }
 
-impl Configurable<VestingGeneratorConfig> for EntryPoint {
+impl Configurable<CosmosToolsConfig> for EntryPoint {
     fn config_path(&self) -> Option<PathBuf> {
         // Check if the config file exists, and if it does not, ignore it.
         // If you'd like for a missing configuration file to be a hard error
@@ -62,10 +61,10 @@ impl Configurable<VestingGeneratorConfig> for EntryPoint {
 
     fn process_config(
         &self,
-        config: VestingGeneratorConfig,
-    ) -> Result<VestingGeneratorConfig, FrameworkError> {
+        config: CosmosToolsConfig,
+    ) -> Result<CosmosToolsConfig, FrameworkError> {
         match &self.cmd {
-            VestingGeneratorCmd::Generate(cmd) => cmd.override_config(config),
+            CosmosToolsCmd::Vesting(cmd) => cmd.override_config(config),
         }
     }
 }

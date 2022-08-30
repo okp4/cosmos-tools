@@ -6,7 +6,7 @@ plugins:
   - "@semantic-release/release-notes-generator"
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# ØKP4 vesting_generator"
+      changelogTitle: "# ØKP4 cosmos_tools"
   - - '@google/semantic-release-replace-plugin'
     - replacements:
         - files: [ Cargo.toml ]
@@ -23,9 +23,9 @@ plugins:
         cargo make build
   - - "@semantic-release/github"
     - assets:
-        - name: vesting_generator
+        - name: cosmos_tools
           label: Binary - Darwin amd64
-          path: "./target/release/vesting_generator"
+          path: "./target/release/cosmos_tools"
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md

@@ -3,7 +3,7 @@
 #![deny(warnings, missing_docs, trivial_casts, unused_qualifications)]
 #![forbid(unsafe_code)]
 
-use vesting_generator::application::APP;
+use cosmos_tools::application::APP;
 
 /// Boot VestingGenerator
 fn main() {
