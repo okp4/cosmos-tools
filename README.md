@@ -7,6 +7,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/okp4/cosmos-tools?style=for-the-badge&token=K5CYM8TQQY)](https://codecov.io/gh/okp4/cosmos-tools)
 [![conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
+[![contributor covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=for-the-badge)](https://github.com/okp4/.github/blob/main/CODE_OF_CONDUCT.md)
 
 Rust command line application with multiple tools to manage cosmos blockchain.
 
