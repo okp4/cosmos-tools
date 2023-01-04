@@ -7,6 +7,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/okp4/cosmos-tools?style=for-the-badge&token=K5CYM8TQQY)](https://codecov.io/gh/okp4/cosmos-tools)
 [![conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
+[![contributor covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=for-the-badge)](https://github.com/okp4/.github/blob/main/CODE_OF_CONDUCT.md)
 
 Rust command line application with multiple tools to manage cosmos blockchain.
 
@@ -22,7 +23,7 @@ On a cosmos blockchain, it's possible to create multiple type of vesting account
 
 - [`ContinuousVestingAccount`](https://docs.cosmos.network/master/modules/auth/05_vesting.html#continuousvestingaccount) : Continuous vesting, where coins begin to vest at a start time and vest linearly with respect to time until an end time is reached
 - [`DelayedVestingAccount`](https://docs.cosmos.network/master/modules/auth/05_vesting.html#delayedvestingaccount) : Delayed vesting, where all coins are vested once an end time is reached.
-- [`PeriodicVestingAccount`](https://docs.cosmos.network/master/modules/auth/05_vesting.html#periodicvestingaccount) : Periodic vesting, where coins begin to vest at a start time and vest periodically according to number of periods and the vesting amount per period. The number of periods, length per period, and amount per period are configurable. A periodic vesting account is distinguished from a continuous vesting account in that coins can be released in staggered tranches. For example, a periodic vesting account could be used for vesting arrangements where coins are relased quarterly, yearly, or over any other function of tokens over time.
+- [`PeriodicVestingAccount`](https://docs.cosmos.network/master/modules/auth/05_vesting.html#periodicvestingaccount) : Periodic vesting, where coins begin to vest at a start time and vest periodically according to number of periods and the vesting amount per period. The number of periods, length per period, and amount per period are configurable. A periodic vesting account is distinguished from a continuous vesting account in that coins can be released in staggered tranches. For example, a periodic vesting account could be used for vesting arrangements where coins are released quarterly, yearly, or over any other function of tokens over time.
 - ...
 
 But there is a missing vesting mode : a continuous vesting account with a cliff. This means that there should be a mode where the vesting starts in a linear way on a given date but that the funds are available only after a certain time (cliff), including an end time like ContinuousVestingAccount.

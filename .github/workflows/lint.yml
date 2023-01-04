@@ -50,7 +50,7 @@ jobs:
 
       - name: Find changed rust files
         id: changed-rust-cargo
-        uses: tj-actions/changed-files@v23
+        uses: tj-actions/changed-files@v35
         with:
           files: |
             Cargo.toml
@@ -59,7 +59,7 @@ jobs:
         if: steps.changed-rust-cargo.outputs.any_changed == 'true'
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.65
           default: true
           override: true
 
@@ -82,7 +82,7 @@ jobs:
 
       - name: Find changed rust files
         id: changed-rust-files
-        uses: tj-actions/changed-files@v23
+        uses: tj-actions/changed-files@v35
         with:
           files: |
             **/*.rs
@@ -93,7 +93,7 @@ jobs:
         if: steps.changed-rust-files.outputs.any_changed == 'true'
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.65
           default: true
           override: true
 
@@ -115,7 +115,7 @@ jobs:
       - name: Setup rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.65
           default: true
           override: true
 
@@ -146,7 +146,7 @@ jobs:
       - name: Setup rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.65
           default: true
           override: true
 
