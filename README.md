@@ -1,9 +1,9 @@
 # 🪐 Cosmos tools
 
 [![version](https://img.shields.io/github/v/release/okp4/cosmos-tools?style=for-the-badge)](https://github.com/okp4/cosmos-tools/releases)
-[![build](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Build?label=build&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/build.yml)
-[![lint](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Lint?label=lint&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/lint.yml)
-[![test](https://img.shields.io/github/workflow/status/okp4/cosmos-tools/Test?label=test&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/test.yml)
+[![build](https://img.shields.io/github/actions/workflow/status/okp4/cosmos-tools/build.yml?branch=main&label=build&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/build.yml)
+[![lint](https://img.shields.io/github/actions/workflow/status/okp4/cosmos-tools/lint.yml?branch=main&label=lint&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/lint.yml)
+[![test](https://img.shields.io/github/actions/workflow/status/okp4/cosmos-tools/test.yml?branch=main&label=test&style=for-the-badge)](https://github.com/okp4/cosmos-tools/actions/workflows/test.yml)
 [![codecov](https://img.shields.io/codecov/c/github/okp4/cosmos-tools?style=for-the-badge&token=K5CYM8TQQY)](https://codecov.io/gh/okp4/cosmos-tools)
 [![conventional commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg?style=for-the-badge)](https://opensource.org/licenses/BSD-3-Clause)
