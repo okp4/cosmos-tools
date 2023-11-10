@@ -44,7 +44,7 @@ fn version_no_args() {
 fn generate_with_args() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
-        .args(&[
+        .args([
             "vesting",
             "generate-cliff",
             "40000",
@@ -64,7 +64,7 @@ fn generate_with_args() {
 fn generate_with_args_denom() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
-        .args(&[
+        .args([
             "vesting",
             "generate-cliff",
             "40000",
@@ -90,7 +90,7 @@ fn generate_with_config_no_args_denom() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .config(&config)
-        .args(&[
+        .args([
             "vesting",
             "generate-cliff",
             "40000",
@@ -114,7 +114,7 @@ fn generate_with_config_args_denom() {
     let mut runner = RUNNER.clone();
     let mut cmd = runner
         .config(&config)
-        .args(&[
+        .args([
             "vesting",
             "generate-cliff",
             "40000",

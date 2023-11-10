@@ -76,7 +76,7 @@ impl Runnable for GenerateCliffCmd {
         match json {
             Ok(json) => {
                 if self.output.is_some() {
-                    let _ = std::fs::write(&self.output.as_ref().unwrap(), &json);
+                    let _ = std::fs::write(self.output.as_ref().unwrap(), &json);
                 } else {
                     println!("{}", json);
                 }
